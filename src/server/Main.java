@@ -51,6 +51,8 @@ public class Main{
             	}
             	tabuleiro.colocarPeca(linha, coluna, clients[turno % 2].getEquipa());
             	enviarTabuleiro();
+            	
+            	turno++;
             }
             
             fecharClientes();
@@ -70,10 +72,7 @@ public class Main{
     }
     
     public static void enviarTabuleiro() {
-    	String tabuleiroString = "";
-    	for(int i = 0; i < tabuleiro.getEspacos().length; i++) {
-    		tabuleiroString += String.valueOf(tabuleiro.getEspacos()[i]);
-    	}
+    	String tabuleiroString = tabuleiro.serializar();
     	for(ClientHandler client : clients) {
     		try { 
     			client.enviar(tabuleiroString);

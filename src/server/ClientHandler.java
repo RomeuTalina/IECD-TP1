@@ -23,7 +23,7 @@ public class ClientHandler extends Thread{
 		}
 		this.clientSocket = clientSocket; 
 		this.is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-		this.os = new PrintWriter(clientSocket.getOutputStream());
+		this.os = new PrintWriter(clientSocket.getOutputStream(), true);
 		this.start();
 	} 
 	

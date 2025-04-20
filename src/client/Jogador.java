@@ -2,8 +2,6 @@ package client;
 
 import java.util.Scanner;
 
-import server.Tabuleiro;
-
 public class Jogador {
 
 	public Equipa equipa;

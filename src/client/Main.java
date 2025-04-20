@@ -21,6 +21,7 @@ public class Main{
     private static int port;
 
     private static Socket socket;
+    
     private static BufferedReader is;
     private static PrintWriter os;
 
@@ -40,7 +41,7 @@ public class Main{
         try{
             socket = new Socket(host, port);
             is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            os = new PrintWriter(socket.getOutputStream());
+            os = new PrintWriter(socket.getOutputStream(), true);
         }catch(Exception e){
             e.printStackTrace();
         }

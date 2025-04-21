@@ -29,6 +29,8 @@ public class Jogador {
 		return new int[]{linha, coluna};
 	}
 	
+	
+	
 	/**
 	 * O cliente verifica se é o turno do seu jogador. Caso seja, inicia a jogada.
 	 * @param turno

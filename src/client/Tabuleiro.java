@@ -22,6 +22,10 @@ public class Tabuleiro {
             espacos[i] = Arrays.copyOfRange(temp, i*15, (i + 1)*15);
         }
     }
+    
+    public boolean estaLivre(int linha, int coluna) {
+        return espacos[linha][coluna] == '\0';
+    }
 
     @Override
     public String toString() {

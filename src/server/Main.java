@@ -54,8 +54,8 @@ public class Main{
             	tabuleiro.colocarPeca(linha, coluna, equipaDaVez);
 
             	if (tabuleiro.verificarVitoria(linha, coluna, equipaDaVez)) {
-            	    enviarTabuleiro();                  // mostra a última jogada
-            	    enviar("FIM|" + equipaDaVez);       // notifica clientes
+            	    enviarTabuleiro();
+            	    enviar("FIM|" + equipaDaVez);
             	    terminar = true;
             	} else {
             	    enviarTabuleiro();

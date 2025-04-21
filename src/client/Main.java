@@ -53,7 +53,13 @@ public class Main{
             jogador = new Jogador(equipaString);
 
             while(!terminar) {
-            	turno = Integer.parseInt(is.readLine());
+            	String linhaRecebida = is.readLine();
+            	if (linhaRecebida.startsWith("FIM|")) {
+            	    System.out.println("Vitória do " + linhaRecebida.substring(4));
+            	    terminar = true;
+            	    break;
+            	}
+            	turno = Integer.parseInt(linhaRecebida);
             	int[] jogada = jogador.verificarTurno(turno);
             	enviarJogada(jogada);
             	tabuleiro.atualizar(is.readLine());

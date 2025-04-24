@@ -9,20 +9,18 @@ public class RegistoJogador {
 	 private String password; 
 	 private String nacionalidade;
 	 private int idade;
-	 //private byte[] foto; 
-	    
+	 private String caminhoFoto;
 	 private int vitorias;
 	 private int derrotas;
 	 private ArrayList<Duration> temposPorJogo;
 	    
-	 public RegistoJogador(String nickname, String password, String nacionalidade, int idade) { //Acrescentar um argumento para a foto 
+	 public RegistoJogador(String nickname, String password, String nacionalidade, int idade, String caminhoFoto) { //Acrescentar um argumento para a foto 
 	    	
 		 this.nickname = nickname;
 		 this.password = password;
 		 this.nacionalidade = nacionalidade;
 		 this.idade = idade;
-		 //this.foto = foto;
-	    	
+		 this.caminhoFoto = caminhoFoto;
 		 this.vitorias = 0;
 		 this.derrotas = 0;
 		 this.temposPorJogo = new ArrayList<>();
@@ -56,5 +54,33 @@ public class RegistoJogador {
 	public String getPassword() {
 		return password;
 	}
+	
+	public String getNickname()      {
+		return nickname; 
+	}
+	
+	public String getNacionalidade() { 
+		return nacionalidade; 
+	}
+	
+	public int    getIdade(){
+		return idade; 
+	}
+	public int    getVitorias(){
+		return vitorias; 
+	}
+	
+	public int    getDerrotas(){
+		return derrotas; 
+	}
+	
+	public String getCaminhoFoto() {
+	    return caminhoFoto;
+	}
+
+	public void setCaminhoFoto(String caminhoFoto) {
+	    this.caminhoFoto = caminhoFoto;
+	}
+
 
 }

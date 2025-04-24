@@ -62,6 +62,8 @@ public class Main{
         	    System.out.print("Password: ");
         	    String pass = scan.nextLine();
         	    os.println(pass);
+        	    
+        	    
 
         	    String resposta = is.readLine();
         	    if (resposta.equals("LOGIN_OK")) {
@@ -147,10 +149,15 @@ public class Main{
 
         System.out.print("Idade: ");
         int idade = Integer.parseInt(scan.nextLine());
+        
+        System.out.print("Caminho da foto: ");
+        String caminhoFoto = scan.nextLine();
+        
 
         os.println(nick);
         os.println(pass);
         os.println(nac);
         os.println(idade);
+        os.println(caminhoFoto);
     }
 }

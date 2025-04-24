@@ -3,6 +3,7 @@ import java.io.IOException;
 //import java.io.InputStreamReader;
 //import java.io.PrintWriter;
 import java.net.ServerSocket;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 //import java.net.Socket;
@@ -26,7 +27,9 @@ public class Main{
     
     private static boolean terminar = false;
     
-    private static Map<String, RegistoJogador> jogadores = new HashMap<>();
+    private static Map<String, RegistoJogador> jogadores = Collections.synchronizedMap(XMLDom.carregar());
+    
+    
 
     public static void main(String[] args) {
     	
@@ -103,8 +106,9 @@ public class Main{
     		try { 
     			client.enviar(tabuleiroString);
     		}catch(IOException e) {
-    			System.err.println("Erro ao enviar o estado do jogo para o cliente " + client.toString() + ".");
-    		}
+    			System.err.println("Erro ao inicializar o servidor");
+                e.printStackTrace();    		
+            }
     	}
     }
     
@@ -120,10 +124,12 @@ public class Main{
     
     public static void registarJogador(String nickname, RegistoJogador jogador) {
         jogadores.put(nickname, jogador);
+        XMLDom.guardar(jogadores);
     }
     
     public static RegistoJogador getJogador(String nick) {
         return jogadores.get(nick);
+        
     }
     
     public static void enviarTabuleiroPara(ClientHandler client) {
@@ -138,5 +144,11 @@ public class Main{
     private static boolean clientsProntos() {
         return clients[0] != null && clients[1] != null &&
                clients[0].isPronto() && clients[1].isPronto();
+    }
+    
+    private static void actualizarEstatisticas(RegistoJogador j, boolean vitoria) {
+        if (vitoria) j.registarVitoria();
+        else         j.registarDerrota();
+        XMLDom.guardar(jogadores);   // volta a gravar
     }
 }

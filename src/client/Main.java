@@ -89,10 +89,10 @@ public class Main{
             jogador = new Jogador(equipaString);
 
             while (!terminar) {
-            	tabuleiro.atualizar(is.readLine()); // <-- primeiro lê o tabuleiro
+            	tabuleiro.atualizar(is.readLine());
             	mostrarTabuleiro();
 
-            	String turnoStr = is.readLine(); // <-- depois lê o turno
+            	String turnoStr = is.readLine();
             	if (turnoStr == null || turnoStr.trim().isEmpty()) {
             	    System.err.println("Erro: turno inválido recebido!");
             	    socket.close();
@@ -105,9 +105,6 @@ public class Main{
             	}
             	turno = Integer.parseInt(turnoStr.trim());
 
-                //tabuleiro.atualizar(is.readLine());
-
-                //mostrarTabuleiro();
                 if ((turno % 2 == 0 && jogador.equipa == Equipa.PRETO) ||
                     (turno % 2 == 1 && jogador.equipa == Equipa.BRANCO)) {
                     int[] jogada = jogador.jogar();

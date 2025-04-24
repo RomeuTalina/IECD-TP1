@@ -3,6 +3,8 @@ import java.io.IOException;
 //import java.io.InputStreamReader;
 //import java.io.PrintWriter;
 import java.net.ServerSocket;
+import java.util.HashMap;
+import java.util.Map;
 //import java.net.Socket;
 //import java.util.ArrayList;
 
@@ -23,6 +25,8 @@ public class Main{
     private static boolean waiting = true;
     
     private static boolean terminar = false;
+    
+    private static Map<String, RegistoJogador> jogadores = new HashMap<>();
 
     public static void main(String[] args) {
     	
@@ -99,5 +103,9 @@ public class Main{
     			System.err.println("nsei bro");
     		}
     	}
+    }
+    
+    public static void registarJogador(String nickname, RegistoJogador jogador) {
+        jogadores.put(nickname, jogador);
     }
 }

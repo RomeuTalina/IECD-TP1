@@ -37,6 +37,7 @@ public class Main{
 
         System.out.println("Introduza a porta:");
         port = scan.nextInt();
+        scan.nextLine();
         
         try{
             socket = new Socket(host, port);
@@ -47,23 +48,71 @@ public class Main{
         }
 
         try{
+        	
+        	System.out.println("Já tem conta? (s/n): ");
+        	String temConta = scan.nextLine();
 
+        	if (temConta.equalsIgnoreCase("s")) {
+        	    os.println("LOGIN");
+        	    
+        	    System.out.print("Nickname: ");
+        	    String nick = scan.nextLine();
+        	    os.println(nick);
+        	    
+        	    System.out.print("Password: ");
+        	    String pass = scan.nextLine();
+        	    os.println(pass);
+
+        	    String resposta = is.readLine();
+        	    if (resposta.equals("LOGIN_OK")) {
+        	        System.out.println("Login efetuado com sucesso.");
+        	    } else {
+        	        System.out.println("Login falhou: " + resposta);
+        	        socket.close();
+        	        return;
+        	    }
+
+        	} else {
+        	    os.println("REGISTO");
+        	    fazerRegisto(os, scan);
+        	    
+        	    String resposta = is.readLine();
+        	    if (!resposta.equals("REGISTO_OK")) {
+        	        System.out.println("Registo falhou: " + resposta);
+        	        socket.close();
+        	        return;
+        	    }
+        	}
+        	
         	equipaString = is.readLine();
             tabuleiro = new Tabuleiro(is.readLine());
             jogador = new Jogador(equipaString);
 
-            while(!terminar) {
-            	String linhaRecebida = is.readLine();
-            	if (linhaRecebida.startsWith("FIM|")) {
-            	    System.out.println("Vitória do " + linhaRecebida.substring(4));
+            while (!terminar) {
+            	tabuleiro.atualizar(is.readLine()); // <-- primeiro lê o tabuleiro
+            	mostrarTabuleiro();
+
+            	String turnoStr = is.readLine(); // <-- depois lê o turno
+            	if (turnoStr == null || turnoStr.trim().isEmpty()) {
+            	    System.err.println("Erro: turno inválido recebido!");
+            	    socket.close();
+            	    return;
+            	}
+            	if (turnoStr.startsWith("FIM|")) {
+            	    System.out.println("Vitória do " + turnoStr.substring(4));
             	    terminar = true;
             	    break;
             	}
-            	turno = Integer.parseInt(linhaRecebida);
-            	int[] jogada = jogador.verificarTurno(turno);
-            	enviarJogada(jogada);
-            	tabuleiro.atualizar(is.readLine());
-            	mostrarTabuleiro();
+            	turno = Integer.parseInt(turnoStr.trim());
+
+                //tabuleiro.atualizar(is.readLine());
+
+                //mostrarTabuleiro();
+                if ((turno % 2 == 0 && jogador.equipa == Equipa.PRETO) ||
+                    (turno % 2 == 1 && jogador.equipa == Equipa.BRANCO)) {
+                    int[] jogada = jogador.jogar();
+                    enviarJogada(jogada);
+                }
             }
             
             os.close();
@@ -86,5 +135,25 @@ public class Main{
     
     private static void mostrarTabuleiro() {
     	System.out.println(tabuleiro);
+    }
+    
+    public static void fazerRegisto(PrintWriter os, Scanner scan) {
+        System.out.println("===== Registo de Jogador =====");
+        System.out.print("Nickname: ");
+        String nick = scan.nextLine();
+
+        System.out.print("Password: ");
+        String pass = scan.nextLine();
+
+        System.out.print("Nacionalidade: ");
+        String nac = scan.nextLine();
+
+        System.out.print("Idade: ");
+        int idade = Integer.parseInt(scan.nextLine());
+
+        os.println(nick);
+        os.println(pass);
+        os.println(nac);
+        os.println(idade);
     }
 }

@@ -11,8 +11,9 @@ public class ClientHandler extends Thread{
 	private Socket clientSocket;
 	private BufferedReader is;
 	private PrintWriter os;
-	
+	private RegistoJogador jogador;
 	private Equipa equipaDoJogador; 
+	private boolean pronto = false;
 	
 	public ClientHandler(Socket clientSocket, int numero) throws IOException {
 		if(numero == 0) { 
@@ -28,16 +29,56 @@ public class ClientHandler extends Thread{
 	} 
 	
 	public void run() {
-		try {
-			if(equipaDoJogador == Equipa.PRETO) {
-				enviar("preto");
-			}
-			else if(equipaDoJogador == Equipa.BRANCO) {
-				enviar("branco");
-			}
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
+	    try {
+	        String comando = is.readLine();
+
+	        if (comando != null && comando.equalsIgnoreCase("REGISTO")) {
+	            String nick = is.readLine();
+	            String pass = is.readLine();
+	            String nac = is.readLine();
+	            int idade = Integer.parseInt(is.readLine());
+
+	            if (Main.getJogador(nick) != null) {
+	                enviar("ERRO: Jogador já existe.");
+	                return;
+	            }
+
+	            jogador = new RegistoJogador(nick, pass, nac, idade);
+	            Main.registarJogador(nick, jogador);
+	            enviar("REGISTO_OK");
+	            pronto = true;
+
+	        } else if (comando != null && comando.equalsIgnoreCase("LOGIN")) {
+	            String nick = is.readLine();
+	            String pass = is.readLine();
+
+	            RegistoJogador existente = Main.getJogador(nick);
+	            if (existente == null) {
+	                enviar("ERRO: Jogador não encontrado.");
+	                return;
+	            }
+
+	            if (!existente.getPassword().equals(pass)) {
+	                enviar("ERRO: Password incorreta.");
+	                return;
+	            }
+
+	            jogador = existente;
+	            enviar("LOGIN_OK");
+	            pronto = true;
+	        }
+
+	        if (equipaDoJogador == Equipa.PRETO) {
+	            enviar("preto");
+	        } else if (equipaDoJogador == Equipa.BRANCO) {
+	            enviar("branco");
+	        }
+
+	        Main.enviarTabuleiroPara(this);
+
+	    } catch(IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	/**
@@ -71,4 +112,12 @@ public class ClientHandler extends Thread{
 		is.close();
 		clientSocket.close();
 	}
+	
+	public boolean isPronto() {
+		return pronto;
+	}
+	
+	
+	
+	
 }

@@ -42,10 +42,23 @@ public class Main{
             	clients[nJogadores] = (new ClientHandler(serverSocket.accept(), nJogadores)); 
             	nJogadores++;
             	System.out.println("Jogador " + nJogadores + " conectou-se.");
-            	if(nJogadores == 2) waiting = false;
+            	if(nJogadores == 2) {
+            		waiting = false;
+            		
+            	}
+
             }
+            
+            while (!clientsProntos()) {
+                Thread.sleep(1000);
+            }
+            System.out.println("Ambos jogadores autenticados. Iniciando o jogo!");
             enviarTabuleiro();
+        	
+        	
+            
             while(!terminar) {
+            	
             	enviar(String.valueOf(turno));
             	int linha = Integer.parseInt(clients[turno % 2].ler());
             	int coluna = Integer.parseInt(clients[turno % 2].ler());
@@ -107,5 +120,23 @@ public class Main{
     
     public static void registarJogador(String nickname, RegistoJogador jogador) {
         jogadores.put(nickname, jogador);
+    }
+    
+    public static RegistoJogador getJogador(String nick) {
+        return jogadores.get(nick);
+    }
+    
+    public static void enviarTabuleiroPara(ClientHandler client) {
+        String tabuleiroString = tabuleiro.serializar();
+        try {
+            client.enviar(tabuleiroString);
+        } catch (IOException e) {
+            System.err.println("Erro ao enviar tabuleiro individualmente para: " + client.toString());
+        }
+    }
+    
+    private static boolean clientsProntos() {
+        return clients[0] != null && clients[1] != null &&
+               clients[0].isPronto() && clients[1].isPronto();
     }
 }

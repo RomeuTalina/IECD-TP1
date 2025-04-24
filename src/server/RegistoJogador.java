@@ -52,4 +52,9 @@ public class RegistoJogador {
 	 public ArrayList<Duration> getTemposPorJogo() { 
 		 return temposPorJogo;
 	 }
+
+	public String getPassword() {
+		return password;
+	}
+
 }

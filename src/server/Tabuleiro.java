@@ -52,7 +52,12 @@ public class Tabuleiro {
     
     public String serializar() {
         StringBuilder sb = new StringBuilder(225);
-        for (char[] linha : espacos) sb.append(linha);
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                char c = espacos[i][j];
+                sb.append(c == '\0' ? ' ' : c);
+            }
+        }
         return sb.toString();
     }
 

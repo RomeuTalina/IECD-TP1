@@ -1,8 +1,11 @@
 package client;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -159,5 +162,32 @@ public class Main{
         os.println(nac);
         os.println(idade);
         os.println(caminhoFoto);
+        
+        /* Enviar a foto */
+        
+        File foto = new File(caminhoFoto);
+        if (!foto.exists()) {
+            System.out.println("Ficheiro não encontrado!");
+            return;
+        }
+
+        /* 1. cabeçalho com nome e tamanho (linhas de texto) */
+        os.println(foto.getName());         // ex.: "avatar.jpg"
+        os.println(foto.length());          // nº de bytes
+        os.flush();                         // esvazia o buffer de texto
+
+        /* 2. enviar os bytes */
+        try (FileInputStream fis = new FileInputStream(foto);
+             OutputStream   out = socket.getOutputStream()) {
+
+            byte[] buf = new byte[8192];
+            int l;
+            while ((l = fis.read(buf)) != -1) {
+                out.write(buf, 0, l);
+            }
+            out.flush();
+        }catch (IOException e) {
+			System.out.println("Erro ao enviar a foto: " + e.getMessage());
+		}
     }
 }

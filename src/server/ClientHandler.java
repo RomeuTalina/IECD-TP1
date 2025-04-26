@@ -46,37 +46,71 @@ public class ClientHandler extends Thread{
 	            int idade = Integer.parseInt(idadeStr); // A idade deve ser lida separadamente como um número
 
 	            // Depois, lemos o caminho da foto como string
-	            String caminhoFoto = is.readLine();  
+	            String caminhoFoto = is.readLine(); 
+	            
+	            //TESTE
+	            
+	         // 1. lê o cabeçalho
+	            String nomeFoto = is.readLine();          // "avatar.jpg"
+	            long   tamanho  = Long.parseLong(is.readLine());
 
-	            if (Main.getJogador(nick) != null) {
-	                enviar("ERRO: Jogador já existe.");
-	                return;
+	            // 2. recebe os bytes
+	            byte[] dados = new byte[(int) tamanho];
+	            InputStream in = clientSocket.getInputStream();
+	            int lidos = 0;
+	            while (lidos < tamanho) {
+	                int n = in.read(dados, lidos, (int)(tamanho - lidos));
+	                if (n == -1) throw new IOException("Fim de stream prematuro");
+	                lidos += n;
 	            }
 
-	            // Verificar se a foto existe no caminho fornecido
-	            File fotoOriginal = new File(caminhoFoto);
-	            if (!fotoOriginal.exists()) {
-	                enviar("ERRO: Foto não encontrada no caminho fornecido.");
-	                return;
+	            // 3. grava no disco do servidor
+	            File pastaFotos = new File("./fotos");
+	            pastaFotos.mkdir();                         // cria se não existir
+	            File fotoDestino = new File(pastaFotos, nomeFoto);
+	            try (FileOutputStream fos = new FileOutputStream(fotoDestino)) {
+	                fos.write(dados);
 	            }
 
-	            // Mover a foto para um diretório centralizado no servidor
-	            String diretórioFotos = "./fotos/";  // Diretório onde as fotos serão armazenadas
-	            File pastaFotos = new File(diretórioFotos);
-	            if (!pastaFotos.exists()) {
-	                pastaFotos.mkdir();  // Cria o diretório caso não exista
-	            }
+	            System.out.println("Foto recebida em: " + fotoDestino.getPath());
 
-	            // Copiar a foto para o diretório 'fotos' do servidor
-	            File fotoDestino = new File(diretórioFotos + fotoOriginal.getName()); // Nome da foto será mantido
-	            try {
-	                Files.copy(fotoOriginal.toPath(), fotoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
-	                System.out.println("Foto movida para: " + fotoDestino.getPath());
-	            } catch (IOException e) {
-	                enviar("ERRO: Não foi possível mover a foto para o diretório do servidor.");
-	                e.printStackTrace();
-	                return;
-	            }
+	            /* 4. prossegue com o registo */
+	            jogador = new RegistoJogador(nick, pass, nac, idade, fotoDestino.getPath());
+	            Main.registarJogador(nick, jogador);
+	            enviar("REGISTO_OK");
+	            pronto = true;
+	            
+	            //FIM DE TESTE
+
+//	            if (Main.getJogador(nick) != null) {
+//	                enviar("ERRO: Jogador já existe.");
+//	                return;
+//	            }
+//
+//	            // Verificar se a foto existe no caminho fornecido
+//	            File fotoOriginal = new File(caminhoFoto);
+//	            if (!fotoOriginal.exists()) {
+//	                enviar("ERRO: Foto não encontrada no caminho fornecido.");
+//	                return;
+//	            }
+//
+//	            // Mover a foto para um diretório centralizado no servidor
+//	            String diretórioFotos = "./fotos/";  // Diretório onde as fotos serão armazenadas
+//	            File pastaFotos = new File(diretórioFotos);
+//	            if (!pastaFotos.exists()) {
+//	                pastaFotos.mkdir();  // Cria o diretório caso não exista
+//	            }
+//
+//	            // Copiar a foto para o diretório 'fotos' do servidor
+//	            File fotoDestino = new File(diretórioFotos + fotoOriginal.getName()); // Nome da foto será mantido
+//	            try {
+//	                Files.copy(fotoOriginal.toPath(), fotoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//	                System.out.println("Foto movida para: " + fotoDestino.getPath());
+//	            } catch (IOException e) {
+//	                enviar("ERRO: Não foi possível mover a foto para o diretório do servidor.");
+//	                e.printStackTrace();
+//	                return;
+//	            }
 
 	            // Criar o jogador com o novo caminho da foto
 	            jogador = new RegistoJogador(nick, pass, nac, idade, fotoDestino.getPath());  // Salva o novo caminho da foto

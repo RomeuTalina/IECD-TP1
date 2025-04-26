@@ -3,6 +3,8 @@ import java.io.IOException;
 //import java.io.InputStreamReader;
 //import java.io.PrintWriter;
 import java.net.ServerSocket;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +58,7 @@ public class Main{
                 Thread.sleep(1000);
             }
             System.out.println("Ambos jogadores autenticados. Iniciando o jogo!");
+            Instant inicioPartida = Instant.now();   
             enviarTabuleiro();
         	
         	
@@ -74,6 +77,20 @@ public class Main{
             	tabuleiro.colocarPeca(linha, coluna, equipaDaVez);
 
             	if (tabuleiro.verificarVitoria(linha, coluna, equipaDaVez)) {
+            	    ClientHandler vencedorCH  = clients[turno % 2];
+            	    ClientHandler perdedorCH  = clients[(turno + 1) % 2];
+
+            	    RegistoJogador vencedor = vencedorCH.getJogador();
+            	    RegistoJogador perdedor = perdedorCH.getJogador();
+
+            	    actualizarEstatisticas(vencedor, true);   // vitória +1
+            	    actualizarEstatisticas(perdedor, false);  // derrota +1
+
+            	    Duration d = Duration.between(inicioPartida, Instant.now());
+            	    vencedor.adicionarTempo(d);
+            	    perdedor.adicionarTempo(d);
+
+            	    XMLDom.guardar(jogadores);
             	    enviarTabuleiro();
             	    enviar("FIM|" + equipaDaVez);
             	    terminar = true;
@@ -82,7 +99,22 @@ public class Main{
             	    turno++;
             	}
             	
+            	
+            	
+            	
             }
+            
+            Duration duracaoJogo = Duration.between(inicioPartida, Instant.now());
+
+            for (ClientHandler ch : clients) {
+                RegistoJogador r = ch.getJogador();
+                if (r != null) {
+                    r.adicionarTempo(duracaoJogo);          /
+                }
+            }
+
+
+            XMLDom.guardar(jogadores);
             
             fecharClientes();
         }catch(Exception e){
@@ -147,8 +179,11 @@ public class Main{
     }
     
     private static void actualizarEstatisticas(RegistoJogador j, boolean vitoria) {
-        if (vitoria) j.registarVitoria();
-        else         j.registarDerrota();
-        XMLDom.guardar(jogadores);   // volta a gravar
+    	if (vitoria) {
+            j.registarVitoria(); 
+        } else {
+            j.registarDerrota(); 
+        }
+        XMLDom.guardar(jogadores);  
     }
 }

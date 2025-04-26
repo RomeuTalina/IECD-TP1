@@ -159,6 +159,9 @@ public class ClientHandler extends Thread{
 		return pronto;
 	}
 	
+	public RegistoJogador getJogador() {
+	    return jogador;
+	}
 	
 	
 	

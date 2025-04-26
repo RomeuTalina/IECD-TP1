@@ -1,35 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jogadores>
-  <jogador nickname="raimundo">
-    <password>456</password>
-    <nacionalidade>br</nacionalidade>
-    <idade>56</idade>
-    <caminhoFoto>.\fotos\transferir (5).jpeg</caminhoFoto>
-    <vitorias>0</vitorias>
-    <derrotas>0</derrotas>
-  </jogador>
-  <jogador nickname="pedro">
-    <password>234</password>
+  <jogador nickname="matilda">
+    <password>567</password>
     <nacionalidade>pt</nacionalidade>
-    <idade>32</idade>
+    <idade>35</idade>
+    <caminhoFoto>.\fotos\transferir (3).jpeg</caminhoFoto>
+    <vitorias>1</vitorias>
+    <derrotas>1</derrotas>
+    <tempos>
+      <tempo>PT1M54.7586994S</tempo>
+      <tempo>PT1M54.7789243S</tempo>
+    </tempos>
+  </jogador>
+  <jogador nickname="alberto">
+    <password>567</password>
+    <nacionalidade>pt</nacionalidade>
+    <idade>45</idade>
     <caminhoFoto>.\fotos\transferir (3).jpeg</caminhoFoto>
     <vitorias>0</vitorias>
-    <derrotas>0</derrotas>
+    <derrotas>1</derrotas>
+    <tempos>
+      <tempo>PT2M7.1886578S</tempo>
+    </tempos>
   </jogador>
   <jogador nickname="tiago">
     <password>123</password>
     <nacionalidade>pt</nacionalidade>
-    <idade>22</idade>
-    <caminhoFoto>.\fotos\transferir (2).jpeg</caminhoFoto>
+    <idade>12</idade>
+    <caminhoFoto>.\fotos\transferir (4).jpeg</caminhoFoto>
     <vitorias>0</vitorias>
-    <derrotas>0</derrotas>
+    <derrotas>3</derrotas>
+    <tempos>
+      <tempo>PT2M7.1886578S</tempo>
+      <tempo>PT1M54.7586994S</tempo>
+      <tempo>PT1M54.7789243S</tempo>
+    </tempos>
   </jogador>
-  <jogador nickname="gilberto">
+  <jogador nickname="david">
     <password>234</password>
     <nacionalidade>br</nacionalidade>
-    <idade>34</idade>
+    <idade>32</idade>
     <caminhoFoto>.\fotos\transferir (4).jpeg</caminhoFoto>
     <vitorias>0</vitorias>
     <derrotas>0</derrotas>
+    <tempos/>
   </jogador>
 </jogadores>

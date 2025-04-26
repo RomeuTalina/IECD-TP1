@@ -11,6 +11,7 @@ import javax.xml.validation.*;
 
 import java.io.*;
 import java.nio.file.*;
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -48,10 +49,18 @@ public final class XMLDom {
                 String nac    = texto(e, "nacionalidade");
                 int    idade  = inteiro(e, "idade");
                 String caminho = texto(e, "caminhoFoto");
+                
                 int    vit    = inteiro(e, "vitorias");
                 int    der    = inteiro(e, "derrotas");
 
                 RegistoJogador j = new RegistoJogador(nick, pass, nac, idade, caminho);
+                
+                NodeList tempos = e.getElementsByTagName("tempo");
+                for (int t = 0; t < tempos.getLength(); t++) {
+                    String iso = tempos.item(t).getTextContent();   // "PT5M32S"
+                    j.adicionarTempo(Duration.parse(iso));
+                }
+                
                 /* repõe estatísticas */
                 for (int v = 0; v < vit; v++) j.registarVitoria();
                 for (int d = 0; d < der; d++) j.registarDerrota();
@@ -84,8 +93,14 @@ public final class XMLDom {
                 filho(doc, e, "nacionalidade", j.getNacionalidade());
                 filho(doc, e, "idade",         String.valueOf(j.getIdade()));
                 filho(doc, e, "caminhoFoto",  j.getCaminhoFoto());
+          
                 filho(doc, e, "vitorias",      String.valueOf(j.getVitorias()));
                 filho(doc, e, "derrotas",      String.valueOf(j.getDerrotas()));
+                Element tempos = doc.createElement("tempos");
+                for (Duration d : j.getTemposPorJogo()) {
+                    filho(doc, tempos, "tempo", d.toString()); // PT5M32S, PT1H…
+                }
+                e.appendChild(tempos);
                 
                 raiz.appendChild(e);
             }

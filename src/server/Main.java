@@ -1,10 +1,11 @@
 package server; 
 import java.io.IOException;
+import java.net.InetAddress;
 //import java.io.InputStreamReader;
 //import java.io.PrintWriter;
 import java.net.ServerSocket;
+import java.net.UnknownHostException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 //import java.net.Socket;
 //import java.util.ArrayList;
@@ -28,12 +29,14 @@ public class Main{
     private static boolean terminar = false;
     
     private static Map<String, RegistoJogador> jogadores = Collections.synchronizedMap(XMLDom.carregar());
-    
-    
 
     public static void main(String[] args) {
     	
-    	System.out.println("pila");
+        try{
+    	    System.out.println("Endereço do servidor: " + InetAddress.getLocalHost().getHostAddress());
+        }catch(UnknownHostException e){
+            e.printStackTrace();
+        }
 
         tabuleiro = new Tabuleiro();
         
@@ -58,18 +61,24 @@ public class Main{
             System.out.println("Ambos jogadores autenticados. Iniciando o jogo!");
             enviarTabuleiro();
         	
-        	
-            
             while(!terminar) {
-            	
-            	enviar(String.valueOf(turno));
-            	int linha = Integer.parseInt(clients[turno % 2].ler());
-            	int coluna = Integer.parseInt(clients[turno % 2].ler());
-            	if(linha == -1 || coluna == -1) {
-            		terminar = true;
-            		break;
-            	}
-            	Equipa equipaDaVez = clients[turno % 2].getEquipa();
+
+                Equipa equipaDaVez = clients[turno % 2].getEquipa();
+                int linha = 0;
+                int coluna = 0;
+                boolean posicaoValida = false;
+
+                do{
+                    enviarTabuleiro(clients[turno%2].equipaToString());
+                    enviar(String.valueOf(turno));
+                    linha = Integer.parseInt(clients[turno % 2].ler());
+                    coluna = Integer.parseInt(clients[turno % 2].ler());
+                    posicaoValida = tabuleiro.posicaoValida(linha, coluna);
+                    if(linha == -1 || coluna == -1) {
+                        terminar = true;
+                        break;
+            	    }
+                }while(posicaoValida == false);
 
             	tabuleiro.colocarPeca(linha, coluna, equipaDaVez);
 
@@ -99,12 +108,32 @@ public class Main{
     		}
     	}
     }
-    
+
+    /**
+     * Envia para os clientes o tabuleiro.
+     */
     public static void enviarTabuleiro() {
     	String tabuleiroString = tabuleiro.serializar();
     	for(ClientHandler client : clients) {
     		try { 
     			client.enviar(tabuleiroString);
+    		}catch(IOException e) {
+    			System.err.println("Erro ao inicializar o servidor");
+                e.printStackTrace();    		
+            }
+    	}
+    }
+    
+    /**
+     * Envia o tabuleiro para os clientes, seguido de uma mensagem.
+     * @param s A mensagem a enviar.
+     */
+    public static void enviarTabuleiro(String s) {
+    	String tabuleiroString = tabuleiro.serializar();
+    	for(ClientHandler client : clients) {
+    		try { 
+    			client.enviar(tabuleiroString);
+                client.enviar(s);
     		}catch(IOException e) {
     			System.err.println("Erro ao inicializar o servidor");
                 e.printStackTrace();    		

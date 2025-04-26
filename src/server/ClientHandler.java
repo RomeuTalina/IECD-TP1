@@ -148,6 +148,10 @@ public class ClientHandler extends Thread{
 	public Equipa getEquipa() {
 		return equipaDoJogador;
 	}
+
+	public String equipaToString(){
+		return ""+equipaDoJogador;
+	}
 	
 	public void close() throws IOException {
 		os.close();
@@ -158,8 +162,5 @@ public class ClientHandler extends Thread{
 	public boolean isPronto() {
 		return pronto;
 	}
-	
-	
-	
 	
 }

@@ -32,4 +32,12 @@
     <vitorias>0</vitorias>
     <derrotas>0</derrotas>
   </jogador>
+  <jogador nickname="romeu">
+    <password>pilapilapila</password>
+    <nacionalidade>pt</nacionalidade>
+    <idade>19</idade>
+    <caminhoFoto>./fotos/Desktop</caminhoFoto>
+    <vitorias>0</vitorias>
+    <derrotas>0</derrotas>
+  </jogador>
 </jogadores>

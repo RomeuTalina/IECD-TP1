@@ -94,6 +94,11 @@ public class Main{
             	tabuleiro.atualizar(is.readLine());
             	mostrarTabuleiro();
 
+                String line;
+                if((line = is.readLine()) != null){
+                    System.out.println("\n" + line);
+                }
+                
             	String turnoStr = is.readLine();
             	if (turnoStr == null || turnoStr.trim().isEmpty()) {
             	    System.err.println("Erro: turno inválido recebido!");

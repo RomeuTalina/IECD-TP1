@@ -24,6 +24,13 @@ public class Tabuleiro {
     public char[][] getEspacos(){
     	return espacos;
     }
+
+    public boolean posicaoValida(int linha, int coluna){
+        if(espacos[linha][coluna] != '\0') {
+            return false;
+        }
+        return true;
+    }
     
     public boolean verificarVitoria(int linha, int coluna, Equipa equipa) {
     	 return conta(linha, coluna, 0, 1,  equipa) + conta(linha, coluna, 0, -1, equipa) - 1 >= 5 || // horizontal

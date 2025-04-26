@@ -109,7 +109,7 @@ public class Main{
             for (ClientHandler ch : clients) {
                 RegistoJogador r = ch.getJogador();
                 if (r != null) {
-                    r.adicionarTempo(duracaoJogo);          /
+                    r.adicionarTempo(duracaoJogo);          
                 }
             }
 

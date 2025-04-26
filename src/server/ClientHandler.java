@@ -2,7 +2,9 @@ package server;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -70,6 +72,10 @@ public class ClientHandler extends Thread{
 	            File fotoDestino = new File(pastaFotos, nomeFoto);
 	            try (FileOutputStream fos = new FileOutputStream(fotoDestino)) {
 	                fos.write(dados);
+	            }catch (IOException e) {
+	                enviar("ERRO: Não foi possível gravar a foto no servidor.");
+	                e.printStackTrace();
+	                return;
 	            }
 
 	            System.out.println("Foto recebida em: " + fotoDestino.getPath());

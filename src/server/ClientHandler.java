@@ -40,7 +40,7 @@ public class ClientHandler extends Thread {
             if ("REGISTO".equalsIgnoreCase(comando)) {
 
                 String nick  = is.readLine();
-                if (Main.getJogador(nick) != null) {  // nickname já existe
+                if (Main.getJogador(nick) != null) {
                     enviar("ERRO: Jogador já existe.");
                     return;
                 }
@@ -50,7 +50,7 @@ public class ClientHandler extends Thread {
                 int    idade = Integer.parseInt(is.readLine());
 
                 /* --------- foto em Base-64 --------- */
-                String fileName = is.readLine();               // nome do ficheiro
+                String fileName = is.readLine();
                 int    tam64    = Integer.parseInt(is.readLine());
 
                 char[] buf = new char[tam64];
@@ -61,7 +61,7 @@ public class ClientHandler extends Thread {
                     l += n;
                 }
                 String img64 = new String(buf);
-                is.readLine();                 // consome o '\n' restante
+                is.readLine();
 
                 byte[] dados = Base64.getDecoder().decode(img64);
 
@@ -77,9 +77,9 @@ public class ClientHandler extends Thread {
                 jogador = new RegistoJogador(nick, pass, nac, idade, fotoDestino.getPath());
                 Main.registarJogador(nick, jogador);
 
-                enviar("REGISTO_OK");          // 1) confirma
-                enviarCor();                   // 2) envia a cor
-                pronto = true;                 // 3) só agora fica pronto
+                enviar("REGISTO_OK");
+                enviarCor();              
+                pronto = true;               
             }
 
             /* ============ LOGIN ============ */
@@ -99,13 +99,10 @@ public class ClientHandler extends Thread {
                 }
 
                 jogador = existente;
-                enviar("LOGIN_OK");            // 1) confirma
-                enviarCor();                   // 2) envia a cor
-                pronto = true;                 // 3) está pronto
+                enviar("LOGIN_OK");            
+                enviarCor();                  
+                pronto = true;                
             }
-
-            /* tabuleiro inicial será enviado pela thread Main
-               quando ambos os clientes estiverem prontos */
 
         } catch (IOException e) {
             System.err.println("ERRO no handler " + this);
@@ -118,16 +115,20 @@ public class ClientHandler extends Thread {
         enviar(equipaDoJogador == Equipa.PRETO ? "preto" : "branco");
     }
 
-    /* utilitários */
-    public String  ler()       throws IOException { return is.readLine(); }
-    public void    enviar(String s)                { os.println(s);      }
-    public boolean isPronto()                      { return pronto;      }
+    public String  ler() throws IOException        { return is.readLine();   }
+    public void    enviar(String s)                { os.println(s);          }
+    public boolean isPronto()                      { return pronto;          }
     public Equipa  getEquipa()                     { return equipaDoJogador; }
-    public RegistoJogador getJogador()             { return jogador;     }
+    public RegistoJogador getJogador()             { return jogador;     	 }
 
-    @Override public String toString()             { return clientSocket.getInetAddress().getHostAddress(); }
+    @Override 
+    public String toString(){
+    	return clientSocket.getInetAddress().getHostAddress();
+    }
 
     public void close() throws IOException {
-        os.close(); is.close(); clientSocket.close();
+        os.close(); 
+        is.close(); 
+        clientSocket.close();
     }
 }

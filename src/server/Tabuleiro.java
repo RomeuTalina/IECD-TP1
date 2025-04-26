@@ -25,6 +25,10 @@ public class Tabuleiro {
     	return espacos;
     }
     
+    public boolean posicaoLivre(int linha, int coluna) {
+    	return espacos[linha][coluna] == '\0';
+    }
+    
     public boolean verificarVitoria(int linha, int coluna, Equipa equipa) {
     	 return conta(linha, coluna, 0, 1,  equipa) + conta(linha, coluna, 0, -1, equipa) - 1 >= 5 || // horizontal
     	           conta(linha, coluna, 1, 0,  equipa) + conta(linha, coluna, -1, 0, equipa) - 1 >= 5 || // vertical

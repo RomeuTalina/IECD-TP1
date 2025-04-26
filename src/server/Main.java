@@ -1,15 +1,13 @@
 package server; 
+
 import java.io.IOException;
-//import java.io.InputStreamReader;
-//import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-//import java.net.Socket;
-//import java.util.ArrayList;
 
 public class Main{
 	
@@ -35,7 +33,11 @@ public class Main{
 
     public static void main(String[] args) {
     	
-    	System.out.println("pila");
+    	try {    		
+    		System.out.println("Endereço do Servidor: " + InetAddress.getLocalHost().getHostAddress());
+    	}catch(UnknownHostException e) {
+    		e.printStackTrace();
+    	}
 
         tabuleiro = new Tabuleiro();
         
@@ -48,10 +50,8 @@ public class Main{
             	nJogadores++;
             	System.out.println("Jogador " + nJogadores + " conectou-se.");
             	if(nJogadores == 2) {
-            		waiting = false;
-            		
+            		waiting = false;      		
             	}
-
             }
             
             while (!clientsProntos()) {
@@ -59,24 +59,35 @@ public class Main{
             }
             System.out.println("Ambos jogadores autenticados. Iniciando o jogo!");
             Instant inicioPartida = Instant.now();   
-            enviarTabuleiro();
         	
+        	int linha, coluna;
+        	Equipa equipaDaVez = null;
+        	boolean posicaoValida = false;
         	
+        	enviarTabuleiro();
             
             while(!terminar) {
             	//apaguei o tabuleiro do fim e mudei para aqui
-            	enviarTabuleiro();
-            	enviar(String.valueOf(turno));
-            	int linha = Integer.parseInt(clients[turno % 2].ler());
-            	int coluna = Integer.parseInt(clients[turno % 2].ler());
-            	if(linha == -1 || coluna == -1) {
-            		terminar = true;
-            		break;
-            	}
-            	Equipa equipaDaVez = clients[turno % 2].getEquipa();
+            	do {            		
+            		enviar(String.valueOf(turno));
+            		linha = Integer.parseInt(clients[turno % 2].ler());
+            		coluna = Integer.parseInt(clients[turno % 2].ler());
+            		if(linha == -1 || coluna == -1) {
+            			terminar = true;
+            			break;
+            		}
+            		equipaDaVez = clients[turno % 2].getEquipa();
+            		posicaoValida = tabuleiro.posicaoLivre(linha, coluna);
+            		//envia uma resposta ao cliente que indica se a sua jogada foi válida.
+            		clients[turno % 2].enviar(String.valueOf(posicaoValida));
+            		if(posicaoValida) {
+            			tabuleiro.colocarPeca(linha, coluna, equipaDaVez);
+            		}
+            		enviarTabuleiro();
+            	}while(!posicaoValida);
 
-            	tabuleiro.colocarPeca(linha, coluna, equipaDaVez);
-
+            	
+            	
             	if (tabuleiro.verificarVitoria(linha, coluna, equipaDaVez)) {
             	    ClientHandler vencedorCH  = clients[turno % 2];
             	    ClientHandler perdedorCH  = clients[(turno + 1) % 2];
@@ -84,8 +95,8 @@ public class Main{
             	    RegistoJogador vencedor = vencedorCH.getJogador();
             	    RegistoJogador perdedor = perdedorCH.getJogador();
 
-            	    actualizarEstatisticas(vencedor, true);   // vitória +1
-            	    actualizarEstatisticas(perdedor, false);  // derrota +1
+            	    actualizarEstatisticas(vencedor, true);
+            	    actualizarEstatisticas(perdedor, false);
 
             	    Duration d = Duration.between(inicioPartida, Instant.now());
             	    vencedor.adicionarTempo(d);
@@ -98,10 +109,6 @@ public class Main{
             	} else {
             	    turno++;
             	}
-            	
-            	
-            	
-            	
             }
             
             Duration duracaoJogo = Duration.between(inicioPartida, Instant.now());
@@ -153,11 +160,6 @@ public class Main{
     public static RegistoJogador getJogador(String nick) {
         return jogadores.get(nick);
         
-    }
-    
-    public static void enviarTabuleiroPara(ClientHandler client) throws IOException {
-        String tabuleiroString = tabuleiro.serializar();
-        client.enviar(tabuleiroString);
     }
     
     private static boolean clientsProntos() {

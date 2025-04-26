@@ -34,8 +34,11 @@ public class Main{
 
     // --- Misc ---
     private static Scanner scan;
+    private static String sistemaOperativo = System.getProperty("os.name");
 
     public static void main(String args[]){
+    	
+    	System.out.println(sistemaOperativo);
 
         scan = new Scanner(System.in);
 
@@ -98,10 +101,11 @@ public class Main{
             jogador = new Jogador(equipaString);
 
             while (!terminar) {
-            	tabuleiro.atualizar(is.readLine());
+            	
             	mostrarTabuleiro();
 
             	String turnoStr = is.readLine();
+            	System.out.println("DEBUF TURNO STRING: " + turnoStr);
             	if (turnoStr == null || turnoStr.trim().isEmpty()) {
             	    System.err.println("Erro: turno inválido recebido!");
             	    socket.close();
@@ -118,7 +122,14 @@ public class Main{
                     (turno % 2 == 1 && jogador.equipa == Equipa.BRANCO)) {
                     int[] jogada = jogador.jogar();
                     enviarJogada(jogada);
+                    String validade = is.readLine();
+                    if(validade.equals("false")) {
+                    	System.out.println("Esse espaço está ocupado, por favor introduza uma jogada válida.");
+                    }
                 }
+                
+                tabuleiro.atualizar(is.readLine());
+                
             }
             
             os.close();
@@ -166,15 +177,15 @@ public class Main{
         os.println(nac);
         os.println(idade);
         
-        Path   p   = Paths.get(caminhoFoto);
-        byte[] raw = Files.readAllBytes(p);
+        Path caminho = Paths.get(caminhoFoto);
+        byte[] raw = Files.readAllBytes(caminho);
 
-        String fileName = p.getFileName().toString();
-        String img64    = Base64.getEncoder().encodeToString(raw);
+        String fileName = caminho.getFileName().toString();
+        String img64 = Base64.getEncoder().encodeToString(raw);
 
-        os.println(fileName);                      // nome da foto
-        os.println(img64.length());                // nº de chars Base-64
-        os.println(img64);                         // conteúdo
+        os.println(fileName);
+        os.println(img64.length()); 
+        os.println(img64);                        
         os.flush();   
         
     }

@@ -64,7 +64,8 @@ public class Main{
         	
             
             while(!terminar) {
-            	
+            	//apaguei o tabuleiro do fim e mudei para aqui
+            	enviarTabuleiro();
             	enviar(String.valueOf(turno));
             	int linha = Integer.parseInt(clients[turno % 2].ler());
             	int coluna = Integer.parseInt(clients[turno % 2].ler());
@@ -95,7 +96,6 @@ public class Main{
             	    enviar("FIM|" + equipaDaVez);
             	    terminar = true;
             	} else {
-            	    enviarTabuleiro();
             	    turno++;
             	}
             	
@@ -122,25 +122,16 @@ public class Main{
         } 
     }
     
-    private static void enviar(String s) {
+    private static void enviar(String s) throws IOException {
     	for(ClientHandler client : clients) {
-    		try {
-    			client.enviar(s);
-    		}catch(IOException e) {
-    			e.printStackTrace();
-    		}
+    		client.enviar(s);
     	}
     }
     
-    public static void enviarTabuleiro() {
+    public static void enviarTabuleiro() throws IOException {
     	String tabuleiroString = tabuleiro.serializar();
     	for(ClientHandler client : clients) {
-    		try { 
-    			client.enviar(tabuleiroString);
-    		}catch(IOException e) {
-    			System.err.println("Erro ao inicializar o servidor");
-                e.printStackTrace();    		
-            }
+    		client.enviar(tabuleiroString);
     	}
     }
     
@@ -164,13 +155,9 @@ public class Main{
         
     }
     
-    public static void enviarTabuleiroPara(ClientHandler client) {
+    public static void enviarTabuleiroPara(ClientHandler client) throws IOException {
         String tabuleiroString = tabuleiro.serializar();
-        try {
-            client.enviar(tabuleiroString);
-        } catch (IOException e) {
-            System.err.println("Erro ao enviar tabuleiro individualmente para: " + client.toString());
-        }
+        client.enviar(tabuleiroString);
     }
     
     private static boolean clientsProntos() {

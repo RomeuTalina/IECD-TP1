@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Base64;
 
 public class ClientHandler extends Thread{
 	
@@ -47,39 +48,32 @@ public class ClientHandler extends Thread{
 	            String idadeStr = is.readLine();
 	            int idade = Integer.parseInt(idadeStr); // A idade deve ser lida separadamente como um número
 
-	            // Depois, lemos o caminho da foto como string
-	            String caminhoFoto = is.readLine(); 
-	            
-	            //TESTE
-	            
-	         // 1. lê o cabeçalho
-	            String nomeFoto = is.readLine();          // "avatar.jpg"
-	            long   tamanho  = Long.parseLong(is.readLine());
+	            String fileName = is.readLine();               // nome da foto
+	            int    tam64    = Integer.parseInt(is.readLine());
 
-	            // 2. recebe os bytes
-	            byte[] dados = new byte[(int) tamanho];
-	            InputStream in = clientSocket.getInputStream();
+	            // lê exactamente tam64 caracteres
+	            char[] buf = new char[tam64];
 	            int lidos = 0;
-	            while (lidos < tamanho) {
-	                int n = in.read(dados, lidos, (int)(tamanho - lidos));
+	            while (lidos < tam64) {
+	                int n = is.read(buf, lidos, tam64 - lidos);
 	                if (n == -1) throw new IOException("Fim de stream prematuro");
 	                lidos += n;
 	            }
+	            String img64 = new String(buf);
 
-	            // 3. grava no disco do servidor
+	            // converte Base-64 → bytes
+	            byte[] dados = Base64.getDecoder().decode(img64);
+
+	            // grava no servidor
 	            File pastaFotos = new File("./fotos");
-	            pastaFotos.mkdir();                         // cria se não existir
-	            File fotoDestino = new File(pastaFotos, nomeFoto);
+	            pastaFotos.mkdir();                           // se não existir
+	            File fotoDestino = new File(pastaFotos, fileName);
 	            try (FileOutputStream fos = new FileOutputStream(fotoDestino)) {
 	                fos.write(dados);
-	            }catch (IOException e) {
-	                enviar("ERRO: Não foi possível gravar a foto no servidor.");
-	                e.printStackTrace();
-	                return;
 	            }
 
 	            System.out.println("Foto recebida em: " + fotoDestino.getPath());
-
+	            
 	            /* 4. prossegue com o registo */
 	            jogador = new RegistoJogador(nick, pass, nac, idade, fotoDestino.getPath());
 	            Main.registarJogador(nick, jogador);

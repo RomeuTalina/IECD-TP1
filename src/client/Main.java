@@ -8,6 +8,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Scanner;
 
 public class Main{
@@ -139,7 +143,7 @@ public class Main{
     	System.out.println(tabuleiro);
     }
     
-    public static void fazerRegisto(PrintWriter os, Scanner scan) {
+    public static void fazerRegisto(PrintWriter os, Scanner scan) throws IOException {
         System.out.println("===== Registo de Jogador =====");
         System.out.print("Nickname: ");
         String nick = scan.nextLine();
@@ -161,33 +165,17 @@ public class Main{
         os.println(pass);
         os.println(nac);
         os.println(idade);
-        os.println(caminhoFoto);
         
-        /* Enviar a foto */
+        Path   p   = Paths.get(caminhoFoto);
+        byte[] raw = Files.readAllBytes(p);
+
+        String fileName = p.getFileName().toString();
+        String img64    = Base64.getEncoder().encodeToString(raw);
+
+        os.println(fileName);                      // nome da foto
+        os.println(img64.length());                // nº de chars Base-64
+        os.println(img64);                         // conteúdo
+        os.flush();   
         
-        File foto = new File(caminhoFoto);
-        if (!foto.exists()) {
-            System.out.println("Ficheiro não encontrado!");
-            return;
-        }
-
-        /* 1. cabeçalho com nome e tamanho (linhas de texto) */
-        os.println(foto.getName());         // ex.: "avatar.jpg"
-        os.println(foto.length());          // nº de bytes
-        os.flush();                         // esvazia o buffer de texto
-
-        /* 2. enviar os bytes */
-        try (FileInputStream fis = new FileInputStream(foto);
-             OutputStream   out = socket.getOutputStream()) {
-
-            byte[] buf = new byte[8192];
-            int l;
-            while ((l = fis.read(buf)) != -1) {
-                out.write(buf, 0, l);
-            }
-            out.flush();
-        }catch (IOException e) {
-			System.out.println("Erro ao enviar a foto: " + e.getMessage());
-		}
     }
 }

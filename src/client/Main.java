@@ -49,6 +49,7 @@ public class Main{
         port = scan.nextInt();
         scan.nextLine();
         
+        
         try{
             socket = new Socket(host, port);
             is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -128,7 +129,6 @@ public class Main{
             	mostrarTabuleiro();
 
             	String turnoStr = is.readLine();
-            	System.out.println("DEBUF TURNO STRING: " + turnoStr);
             	if (turnoStr == null || turnoStr.trim().isEmpty()) {
             	    System.err.println("Erro: turno inválido recebido!");
             	    socket.close();

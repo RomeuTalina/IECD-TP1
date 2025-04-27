@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Base64;
 
-public class ClientHandler extends Thread {
+public class ClientHandler{
 
     private final Socket          clientSocket;
     private final BufferedReader  is;
@@ -27,12 +27,11 @@ public class ClientHandler extends Thread {
         this.is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         this.os = new PrintWriter   (clientSocket.getOutputStream(), true);
 
-        this.start();
+        this.login();
     }
 
     /* -------------------------------------------------- */
-    @Override
-    public void run() {
+    public void login() {
         try {
             String comando = is.readLine();
 

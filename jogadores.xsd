@@ -10,15 +10,7 @@
       <xs:element name="caminhoFoto"   type="xs:string"/> 
       <xs:element name="vitorias"      type="xs:int"/>
       <xs:element name="derrotas"      type="xs:int"/>
-      
-      <xs:element name="tempos">
-      <xs:complexType>
-        <xs:sequence>
-          <!-- xs:duration já usa a notação ISO-8601 (PT5M32S, PT1H…) -->
-          <xs:element name="tempo" type="xs:duration" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:sequence>
-      </xs:complexType>
-    </xs:element>
+      <xs:element name="tempoTotal"    type="xs:duration" minOccurs="0"/>
     
     </xs:sequence>
     <xs:attribute name="nickname" type="xs:string" use="required"/>

@@ -1,97 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jogadores>
-  <jogador nickname="matilda">
-    <password>567</password>
-    <nacionalidade>pt</nacionalidade>
-    <idade>35</idade>
-    <caminhoFoto>.\fotos\transferir (3).jpeg</caminhoFoto>
-    <vitorias>1</vitorias>
-    <derrotas>1</derrotas>
-    <tempos>
-      <tempo>PT1M54.7586994S</tempo>
-      <tempo>PT1M54.7789243S</tempo>
-    </tempos>
-  </jogador>
-  <jogador nickname="alberto">
-    <password>567</password>
-    <nacionalidade>pt</nacionalidade>
-    <idade>45</idade>
-    <caminhoFoto>.\fotos\transferir (3).jpeg</caminhoFoto>
-    <vitorias>0</vitorias>
-    <derrotas>1</derrotas>
-    <tempos>
-      <tempo>PT2M7.1886578S</tempo>
-    </tempos>
-  </jogador>
-  <jogador nickname="clemente">
-    <password>rerfadsda</password>
-    <nacionalidade>pt</nacionalidade>
-    <idade>34</idade>
-    <caminhoFoto>.\fotos\astronaut-galaxy-space-suit-dream-triangle-butterflies-2880x1800-8085.jpg</caminhoFoto>
-    <vitorias>0</vitorias>
-    <derrotas>0</derrotas>
-    <tempos/>
-  </jogador>
   <jogador nickname="tiago">
     <password>123</password>
     <nacionalidade>pt</nacionalidade>
-    <idade>12</idade>
-    <caminhoFoto>.\fotos\transferir (4).jpeg</caminhoFoto>
-    <vitorias>3</vitorias>
-    <derrotas>3</derrotas>
-    <tempos>
-      <tempo>PT2M7.1886578S</tempo>
-      <tempo>PT1M54.7586994S</tempo>
-      <tempo>PT1M54.7789243S</tempo>
-      <tempo>PT1M30.2261011S</tempo>
-      <tempo>PT1M30.2368484S</tempo>
-      <tempo>PT54.033078S</tempo>
-      <tempo>PT54.0439978S</tempo>
-      <tempo>PT56.6590821S</tempo>
-      <tempo>PT56.6697335S</tempo>
-    </tempos>
-  </jogador>
-  <jogador nickname="clementoide">
-    <password>porerasadasdae</password>
-    <nacionalidade>pt</nacionalidade>
-    <idade>45</idade>
-    <caminhoFoto>.\fotos\astronaut-galaxy-space-suit-dream-triangle-butterflies-2880x1800-8085.jpg</caminhoFoto>
-    <vitorias>0</vitorias>
+    <idade>22</idade>
+    <caminhoFoto>.\fotos\transferir (5).jpeg</caminhoFoto>
+    <vitorias>2</vitorias>
     <derrotas>0</derrotas>
-    <tempos/>
+    <tempoTotal>PT4M49.7117474S</tempoTotal>
   </jogador>
   <jogador nickname="david">
     <password>234</password>
     <nacionalidade>br</nacionalidade>
-    <idade>32</idade>
-    <caminhoFoto>.\fotos\transferir (4).jpeg</caminhoFoto>
+    <idade>34</idade>
+    <caminhoFoto>.\fotos\transferir (3).jpeg</caminhoFoto>
     <vitorias>0</vitorias>
-    <derrotas>3</derrotas>
-    <tempos>
-      <tempo>PT1M30.2261011S</tempo>
-      <tempo>PT1M30.2368484S</tempo>
-      <tempo>PT54.033078S</tempo>
-      <tempo>PT54.0439978S</tempo>
-      <tempo>PT56.6590821S</tempo>
-      <tempo>PT56.6697335S</tempo>
-    </tempos>
-  </jogador>
-  <jogador nickname="goat">
-    <password>4345523</password>
-    <nacionalidade>zuca</nacionalidade>
-    <idade>54</idade>
-    <caminhoFoto>.\fotos\astronaut-galaxy-space-suit-dream-triangle-butterflies-2880x1800-8085.jpg</caminhoFoto>
-    <vitorias>0</vitorias>
-    <derrotas>0</derrotas>
-    <tempos/>
-  </jogador>
-  <jogador nickname="tomatina">
-    <password>porereas</password>
-    <nacionalidade>pt</nacionalidade>
-    <idade>20</idade>
-    <caminhoFoto>.\fotos\astronaut-galaxy-space-suit-dream-triangle-butterflies-2880x1800-8085.jpg</caminhoFoto>
-    <vitorias>0</vitorias>
-    <derrotas>0</derrotas>
-    <tempos/>
+    <derrotas>2</derrotas>
+    <tempoTotal>PT4M49.7117474S</tempoTotal>
   </jogador>
 </jogadores>

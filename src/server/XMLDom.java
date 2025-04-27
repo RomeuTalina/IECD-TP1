@@ -55,11 +55,14 @@ public final class XMLDom {
 
                 RegistoJogador j = new RegistoJogador(nick, pass, nac, idade, caminho);
                 
-                NodeList tempos = e.getElementsByTagName("tempo");
-                for (int t = 0; t < tempos.getLength(); t++) {
-                    String iso = tempos.item(t).getTextContent();   // "PT5M32S"
-                    j.adicionarTempo(Duration.parse(iso));
-                }
+                NodeList tts = e.getElementsByTagName("tempoTotal");
+                if (tts.getLength() > 0) {                    // existe?
+                    String iso = tts.item(0).getTextContent();// pode estar vazio
+                    if (!iso.isEmpty()) {                     // e tem valor?
+                        j.adicionarTempo(Duration.parse(iso));
+                    }
+                }    // repõe o acumulado
+                
                 
                 /* repõe estatísticas */
                 for (int v = 0; v < vit; v++) j.registarVitoria();
@@ -96,11 +99,8 @@ public final class XMLDom {
           
                 filho(doc, e, "vitorias",      String.valueOf(j.getVitorias()));
                 filho(doc, e, "derrotas",      String.valueOf(j.getDerrotas()));
-                Element tempos = doc.createElement("tempos");
-                for (Duration d : j.getTemposPorJogo()) {
-                    filho(doc, tempos, "tempo", d.toString()); // PT5M32S, PT1H…
-                }
-                e.appendChild(tempos);
+                filho(doc, e, "tempoTotal", j.getTempoTotal().toString());
+
                 
                 raiz.appendChild(e);
             }
@@ -136,4 +136,6 @@ public final class XMLDom {
     }
 
     private XMLDom() {}
+    
+   
 }

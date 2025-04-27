@@ -103,7 +103,7 @@ public class Main{
             	    perdedor.adicionarTempo(d);
 
             	    XMLDom.guardar(jogadores);
-            	    enviarTabuleiro();
+            	    //enviarTabuleiro();
             	    enviar("FIM|" + equipaDaVez);
             	    terminar = true;
             	} else {

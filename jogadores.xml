@@ -37,12 +37,18 @@
     <nacionalidade>pt</nacionalidade>
     <idade>12</idade>
     <caminhoFoto>.\fotos\transferir (4).jpeg</caminhoFoto>
-    <vitorias>0</vitorias>
+    <vitorias>3</vitorias>
     <derrotas>3</derrotas>
     <tempos>
       <tempo>PT2M7.1886578S</tempo>
       <tempo>PT1M54.7586994S</tempo>
       <tempo>PT1M54.7789243S</tempo>
+      <tempo>PT1M30.2261011S</tempo>
+      <tempo>PT1M30.2368484S</tempo>
+      <tempo>PT54.033078S</tempo>
+      <tempo>PT54.0439978S</tempo>
+      <tempo>PT56.6590821S</tempo>
+      <tempo>PT56.6697335S</tempo>
     </tempos>
   </jogador>
   <jogador nickname="clementoide">
@@ -60,8 +66,15 @@
     <idade>32</idade>
     <caminhoFoto>.\fotos\transferir (4).jpeg</caminhoFoto>
     <vitorias>0</vitorias>
-    <derrotas>0</derrotas>
-    <tempos/>
+    <derrotas>3</derrotas>
+    <tempos>
+      <tempo>PT1M30.2261011S</tempo>
+      <tempo>PT1M30.2368484S</tempo>
+      <tempo>PT54.033078S</tempo>
+      <tempo>PT54.0439978S</tempo>
+      <tempo>PT56.6590821S</tempo>
+      <tempo>PT56.6697335S</tempo>
+    </tempos>
   </jogador>
   <jogador nickname="goat">
     <password>4345523</password>

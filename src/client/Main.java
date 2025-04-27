@@ -117,6 +117,7 @@ public class Main{
             	    break;
             	}
             	turno = Integer.parseInt(turnoStr.trim());
+            	
 
                 if ((turno % 2 == 0 && jogador.equipa == Equipa.PRETO) ||
                     (turno % 2 == 1 && jogador.equipa == Equipa.BRANCO)) {

@@ -99,7 +99,45 @@ public class ClientHandler extends Thread {
                 }
 
                 jogador = existente;
-                enviar("LOGIN_OK");            
+                enviar("LOGIN_OK"); 
+                
+                String mudarFoto = is.readLine();
+                if (mudarFoto.equalsIgnoreCase("s")) {
+                    try {
+                        String novoNomeFoto = is.readLine();
+                        int novoTam64 = Integer.parseInt(is.readLine());
+                        char[] buf = new char[novoTam64];
+                        int l = 0;
+                        while (l < novoTam64) {
+                            int n = is.read(buf, l, novoTam64 - l);
+                            if (n == -1) throw new IOException("Fim prematuro da imagem");
+                            l += n;
+                        }
+                        String novoImg64 = new String(buf);
+                        is.readLine(); 
+
+                        byte[] dados = Base64.getDecoder().decode(novoImg64);
+
+                        File pastaFotos = new File("./fotos");
+                        pastaFotos.mkdir();
+                        File novaFoto = new File(pastaFotos, novoNomeFoto);
+                        try (FileOutputStream fos = new FileOutputStream(novaFoto)) {
+                            fos.write(dados);
+                        }
+
+
+                        jogador.setCaminhoFoto(novaFoto.getPath());
+
+                        Main.registarJogador(jogador.getNickname(), jogador);
+
+                        System.out.println("Foto do jogador " + jogador.getNickname() + " foi atualizada.");
+
+                    } catch (Exception e) {
+                        System.err.println("Erro ao atualizar a foto do jogador.");
+                        e.printStackTrace();
+                    }
+                }
+                
                 enviarCor();                  
                 pronto = true;                
             }

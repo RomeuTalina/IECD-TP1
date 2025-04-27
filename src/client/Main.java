@@ -54,7 +54,9 @@ public class Main{
             is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             os = new PrintWriter(socket.getOutputStream(), true);
         }catch(Exception e){
+        	System.err.println("Erro ao conectar ao servidor. Verifique o IP e a porta.");
             e.printStackTrace();
+            System.exit(1);
         }
 
         try{
@@ -78,6 +80,27 @@ public class Main{
         	    String resposta = is.readLine();
         	    if (resposta.equals("LOGIN_OK")) {
         	        System.out.println("Login efetuado com sucesso.");
+        	        
+        	        System.out.println("Deseja mudar a sua foto? (s/n): ");
+        	        String mudarFoto = scan.nextLine();
+        	        os.println(mudarFoto); 
+
+        	        if (mudarFoto.equalsIgnoreCase("s")) {
+        	            System.out.print("Novo caminho da foto: ");
+        	            String caminhoFoto = scan.nextLine();
+
+        	            Path caminho = Paths.get(caminhoFoto);
+        	            byte[] raw = Files.readAllBytes(caminho);
+
+        	            String fileName = caminho.getFileName().toString();
+        	            String img64 = Base64.getEncoder().encodeToString(raw);
+
+        	            os.println(fileName);
+        	            os.println(img64.length());
+        	            os.println(img64);
+        	            os.flush();
+        	        }
+
         	    } else {
         	        System.out.println("Login falhou: " + resposta);
         	        socket.close();

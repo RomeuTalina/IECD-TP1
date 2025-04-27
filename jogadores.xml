@@ -6,16 +6,16 @@
     <idade>22</idade>
     <caminhoFoto>.\fotos\transferir (5).jpeg</caminhoFoto>
     <vitorias>2</vitorias>
-    <derrotas>0</derrotas>
-    <tempoTotal>PT4M49.7117474S</tempoTotal>
+    <derrotas>1</derrotas>
+    <tempoTotal>PT6M49.5599815S</tempoTotal>
   </jogador>
   <jogador nickname="david">
     <password>234</password>
     <nacionalidade>br</nacionalidade>
     <idade>34</idade>
-    <caminhoFoto>.\fotos\transferir (3).jpeg</caminhoFoto>
-    <vitorias>0</vitorias>
+    <caminhoFoto>.\fotos\transferir.jpg</caminhoFoto>
+    <vitorias>1</vitorias>
     <derrotas>2</derrotas>
-    <tempoTotal>PT4M49.7117474S</tempoTotal>
+    <tempoTotal>PT6M49.5599815S</tempoTotal>
   </jogador>
 </jogadores>
